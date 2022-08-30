@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangeTask", "RangeTask\RangeTask.csproj", "{AB240331-8DE2-44F5-B5E2-912CD8494F52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapeTask", "ShapeTask\ShapeTask.csproj", "{FBDD2F23-BA15-4CEA-A977-411C7586019E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB240331-8DE2-44F5-B5E2-912CD8494F52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB240331-8DE2-44F5-B5E2-912CD8494F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB240331-8DE2-44F5-B5E2-912CD8494F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB240331-8DE2-44F5-B5E2-912CD8494F52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBDD2F23-BA15-4CEA-A977-411C7586019E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBDD2F23-BA15-4CEA-A977-411C7586019E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBDD2F23-BA15-4CEA-A977-411C7586019E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBDD2F23-BA15-4CEA-A977-411C7586019E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
