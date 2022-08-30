@@ -6,6 +6,11 @@ public class Circle : IShape
 
     public Circle(double radius)
     {
+        if (radius <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(radius));
+        }
+
         Radius = radius;
     }
     
@@ -31,16 +36,30 @@ public class Circle : IShape
 
     public override bool Equals(object? obj)
     {
-        return base.Equals(obj);
+        if (ReferenceEquals(obj, this))
+        {
+            return true;
+        }
+
+        if (ReferenceEquals(obj, null) || obj.GetType() != GetType())
+        { 
+            return false;
+        }
+
+        Circle c = (Circle)obj;
+        return Radius == c.Radius;
     }
 
     public override int GetHashCode()
     {
-        return Radius.GetHashCode();
+        int prime = 11;
+        int hash = 1;
+        hash = prime * hash + Radius.GetHashCode();
+        return hash;
     }
 
     public override string ToString()
     {
-        return base.ToString();
+        return $"Circle: Radius {Radius:f2} Diameter {GetHeight():f2} Area {GetArea():f2} Perimeter {GetPerimeter():f2}";
     }
 }
