@@ -39,6 +39,34 @@ namespace VectorTask
             return _components.Length;
         }
 
+        public double GetLength()
+        {
+            double result = 0;
+
+            for (int i = 0; i < _components.Length; i++)
+            {
+                result += _components[i] * _components[i];
+            }
+
+            return Math.Sqrt(result);
+        }
+
+        public double GetComponent(int index)
+        {
+            if (index >= _components.Length)
+            {
+                return 0;
+            }
+
+            return _components[index];
+        }
+
+        public void SetComponent(int index, double value)
+        {
+            ExtendIfNeeded(index + 1);
+            _components[index] = value;
+        }
+
         public override string ToString()
         {
             StringBuilder vectorInfo = new StringBuilder();
@@ -55,13 +83,55 @@ namespace VectorTask
             return vectorInfo.ToString();
         }
 
-        private int ExtendIfNeeded(int neededSize)
+        public override bool Equals(object? obj)
         {
-            int size = GetSize();
-
-            if (neededSize <= size)
+            if (ReferenceEquals(obj, this))
             {
-                return size;
+                return true;
+            }
+
+            if (ReferenceEquals(obj, null) || obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            Vector v = (Vector)obj;
+
+            if (_components.Length != v._components.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < _components.Length; i++)
+            {
+                if (_components[i] != v._components[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            int prime = 11;
+            int hash = 1;
+            hash = prime * hash + _components.Length;
+
+            for (int i = 0; i < _components.Length; i++)
+            {
+                hash = prime * hash + _components[i].GetHashCode();
+            }
+
+            return hash;
+        }
+
+        private void ExtendIfNeeded(int neededSize)
+        {
+            if (neededSize <= GetSize())
+            {
+                return;
             }
 
             double[] oldComponents = _components;
@@ -71,16 +141,14 @@ namespace VectorTask
             {
                 _components[i] = oldComponents[i];
             }
-
-            return neededSize;
         }
 
         public void Add(Vector otherVector)
         {
             int otherVectorSize = otherVector.GetSize();
-            int size = ExtendIfNeeded(otherVectorSize);
+            ExtendIfNeeded(otherVectorSize);
 
-            for (int i = 0; i < size && i < otherVectorSize; i++)
+            for (int i = 0; i < otherVectorSize; i++)
             {
                 _components[i] += otherVector._components[i];
             }
@@ -89,12 +157,57 @@ namespace VectorTask
         public void Sub(Vector otherVector)
         {
             int otherVectorSize = otherVector.GetSize();
-            int size = ExtendIfNeeded(otherVectorSize);
+            ExtendIfNeeded(otherVectorSize);
 
-            for (int i = 0; i < size && i < otherVectorSize; i++)
+            for (int i = 0; i < otherVectorSize; i++)
             {
                 _components[i] -= otherVector._components[i];
             }
+        }
+
+        public void Mul(double multiplier)
+        {
+            for (int i = 0; i < _components.Length; i++)
+            {
+                _components[i] *= multiplier;
+            }
+        }
+
+        public void Revers()
+        {
+            Mul(-1);
+        }
+
+        public static Vector Sum(Vector a, Vector b)
+        {
+            int size = Math.Max(a.GetSize(), b.GetSize());
+            Vector result = new Vector(size);
+            result.Add(a);
+            result.Add(b);
+            return result;
+        }
+
+        public static Vector Sub(Vector a, Vector b)
+        {
+            int size = Math.Max(a.GetSize(), b.GetSize());
+            Vector result = new Vector(size);
+            result.Sub(a);
+            result.Sub(b);
+            return result;
+        }
+
+        public static double ScalarMultiply(Vector a, Vector b)
+        {
+            int size = Math.Max(a.GetSize(), b.GetSize());
+
+            double result = 0;
+
+            for (int i = 0; i < size; i++)
+            {
+                result += a.GetComponent(i) * b.GetComponent(i);
+            }
+
+            return result;
         }
     }
 }
