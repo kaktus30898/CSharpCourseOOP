@@ -12,20 +12,41 @@ namespace VectorTask
 
         public Vector(double[] components)
         {
+            if (components is null || components.Length == 0)
+            {
+                throw new ArgumentException("Array is empty");
+            }
+
             _components = components;
         }
 
         public Vector(int size)
         {
+            if (size <= 0)
+            {
+                throw new ArgumentException("Array size can't be less than 1");
+            }
+
             _components = new double[size];
         }
 
-        public Vector(Vector vector) : this(vector._components.ToArray())
+        public Vector(Vector source)
         {
+            if (source is null)
+            {
+                throw new ArgumentException(nameof(source), "Source can't be null");
+            }
+
+            _components = source._components.ToArray();
         }
 
         public Vector(int size, double[] components)
         {
+            if (size <= 0)
+            {
+                throw new ArgumentException("Array size can't be less than 1");
+            }
+
             _components = new double[size];
 
             for (int i = 0; i < size && i < components.Length; i++)
@@ -90,7 +111,7 @@ namespace VectorTask
                 return true;
             }
 
-            if (ReferenceEquals(obj, null) || obj.GetType() != GetType())
+            if (obj is null || obj.GetType() != GetType())
             {
                 return false;
             }
@@ -173,7 +194,7 @@ namespace VectorTask
             }
         }
 
-        public void Revers()
+        public void Reverse()
         {
             Mul(-1);
         }
@@ -191,7 +212,7 @@ namespace VectorTask
         {
             int size = Math.Max(a.GetSize(), b.GetSize());
             Vector result = new Vector(size);
-            result.Sub(a);
+            result.Add(a);
             result.Sub(b);
             return result;
         }

@@ -5,7 +5,7 @@ class Program
     public const double Epsilon = 1.0e-10;
     static void Main()
     {
-        var shapes = new IShape[]
+        IShape[] shapes = new IShape[]
         {
             new Circle(5),
             new Square(7),
@@ -16,10 +16,9 @@ class Program
             new Square(2),
             new Triangle(2, 6, 8, 1, 4, 3)
         };
-        var shapes2 = new IShape[] { };
 
-        Console.WriteLine($"Max area {GetMaxAreaShape(shapes2)?.ToString() ?? "not found"}");
-        Console.WriteLine($"2-nd max perimeter {GetSecondPerimeterShape(shapes2)?.ToString() ?? "not found"}");
+        Console.WriteLine($"Max area {GetMaxAreaShape(shapes)?.ToString() ?? "not found"}");
+        Console.WriteLine($"2-nd max perimeter {GetSecondPerimeterShape(shapes)?.ToString() ?? "not found"}");
     }
 
     private static IShape GetMaxAreaShape(IShape[] shapes)
