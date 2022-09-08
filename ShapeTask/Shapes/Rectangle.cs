@@ -2,25 +2,25 @@
 
 public class Rectangle : IShape
 {
-    private double Width { get; set; }
-    private double Height { get; set; }
+    public double Width { get; }
+    public double Height { get; }
 
     public Rectangle(double width, double height)
     {
         if (width <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(width));
+            throw new ArgumentOutOfRangeException(nameof(width), "Width cannot be less than 0");
         }
 
         if (height <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(height));
+            throw new ArgumentOutOfRangeException(nameof(height), "Height cannot be less than 0");
         }
 
         Width = width;
         Height = height;
     }
-    
+
     public double GetWidth()
     {
         return Width;
@@ -43,18 +43,18 @@ public class Rectangle : IShape
 
     public override bool Equals(object? obj)
     {
-        if(ReferenceEquals(obj, this))
+        if (ReferenceEquals(obj, this))
         {
             return true;
         }
 
-        if (ReferenceEquals(obj, null) || obj.GetType() != GetType())
+        if (obj is null || obj.GetType() != GetType())
         {
             return false;
         }
 
         Rectangle r = (Rectangle)obj;
-        return (Width == r.Width && Height == r.Height);
+        return Width == r.Width && Height == r.Height;
     }
 
     public override int GetHashCode()
@@ -68,6 +68,6 @@ public class Rectangle : IShape
 
     public override string ToString()
     {
-        return $"Rectangle: Width {Width:f2} Height {Height:f2} Area {GetArea():f2} Perimeter {GetPerimeter():f2}";
+        return $"Rectangle: Width = {Width:f2} | Height = {Height:f2} | Area = {GetArea():f2} | Perimeter = {GetPerimeter():f2}";
     }
 }

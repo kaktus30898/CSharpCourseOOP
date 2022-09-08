@@ -2,18 +2,18 @@
 
 public class Circle : IShape
 {
-    private double Radius { get; }
+    public double Radius { get; }
 
     public Circle(double radius)
     {
         if (radius <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(radius));
+            throw new ArgumentOutOfRangeException(nameof(radius), "Radius cannot be less than 0");
         }
 
         Radius = radius;
     }
-    
+
     public double GetWidth()
     {
         return Radius * 2;
@@ -21,7 +21,7 @@ public class Circle : IShape
 
     public double GetHeight()
     {
-        return Radius * 2; 
+        return Radius * 2;
     }
 
     public double GetArea()
@@ -41,8 +41,8 @@ public class Circle : IShape
             return true;
         }
 
-        if (ReferenceEquals(obj, null) || obj.GetType() != GetType())
-        { 
+        if (obj is null || obj.GetType() != GetType())
+        {
             return false;
         }
 
@@ -60,6 +60,6 @@ public class Circle : IShape
 
     public override string ToString()
     {
-        return $"Circle: Radius {Radius:f2} Diameter {GetHeight():f2} Area {GetArea():f2} Perimeter {GetPerimeter():f2}";
+        return $"Circle: Radius = {Radius:f2} | Diameter = {GetHeight():f2} | Area = {GetArea():f2} | Perimeter = {GetPerimeter():f2}";
     }
 }

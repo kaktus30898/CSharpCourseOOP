@@ -2,6 +2,7 @@
 
 class Program
 {
+    public const double Epsilon = 1.0e-10;
     static void Main()
     {
         var shapes = new IShape[]
@@ -15,19 +16,30 @@ class Program
             new Square(2),
             new Triangle(2, 6, 8, 1, 4, 3)
         };
+        var shapes2 = new IShape[] { };
 
-        Console.WriteLine($"Max area {GetMaxAreaShape(shapes)}");
-        Console.WriteLine($"2-nd max perimeter {GetMaxPerimeterShape(shapes)}");
+        Console.WriteLine($"Max area {GetMaxAreaShape(shapes2)?.ToString() ?? "not found"}");
+        Console.WriteLine($"2-nd max perimeter {GetSecondPerimeterShape(shapes2)?.ToString() ?? "not found"}");
     }
 
     private static IShape GetMaxAreaShape(IShape[] shapes)
     {
+        if (shapes is null || shapes.Length == 0)
+        {
+            return null;
+        }
+
         Array.Sort(shapes, new AreaComparer());
         return shapes[^1];
     }
 
-    private static IShape GetMaxPerimeterShape(IShape[] shapes)
+    private static IShape GetSecondPerimeterShape(IShape[] shapes)
     {
+        if (shapes is null || shapes.Length < 2)
+        {
+            return null;
+        }
+
         Array.Sort(shapes, new AreaComparer());
         return shapes[^2];
     }

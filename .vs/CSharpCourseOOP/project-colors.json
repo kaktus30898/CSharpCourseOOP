@@ -5,7 +5,17 @@
       "ProjectGuid": "fbdd2f23-ba15-4cea-a977-411c7586019e",
       "DisplayName": "ShapeTask",
       "ColorIndex": 0
+    },
+    "73604c9d-6e7e-48ec-825c-454885124180": {
+      "ProjectGuid": "73604c9d-6e7e-48ec-825c-454885124180",
+      "DisplayName": "VectorTask",
+      "ColorIndex": 1
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }

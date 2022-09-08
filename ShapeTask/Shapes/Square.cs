@@ -2,14 +2,15 @@
 
 public class Square : IShape
 {
-    private double SideLength { get; set; }
+    public double SideLength { get; }
 
     public Square(double sideLength)
     {
         if (sideLength <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(sideLength));
+            throw new ArgumentOutOfRangeException(nameof(sideLength), "Side length cannot be less than 0");
         }
+
         SideLength = sideLength;
     }
 
@@ -40,13 +41,13 @@ public class Square : IShape
             return true;
         }
 
-        if (ReferenceEquals(obj, null) || obj.GetType() != GetType())
+        if (obj is null || obj.GetType() != GetType())
         {
             return false;
         }
 
         Square s = (Square)obj;
-        return SideLength == s.SideLength; 
+        return SideLength == s.SideLength;
     }
 
     public override int GetHashCode()
@@ -59,6 +60,6 @@ public class Square : IShape
 
     public override string ToString()
     {
-        return $"Square: Side Length {SideLength:f2} Area {GetArea():f2} Perimeter {GetPerimeter():f2}";
+        return $"Square: Side Length = {SideLength:f2} | Area = {GetArea():f2} | Perimeter = {GetPerimeter():f2}";
     }
 }
