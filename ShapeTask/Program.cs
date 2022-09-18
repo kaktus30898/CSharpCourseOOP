@@ -1,11 +1,13 @@
-﻿namespace ShapeTask;
+﻿using ShapeTask.Comparers;
+using ShapeTask.Shapes;
+
+namespace ShapeTask;
 
 class Program
 {
-    public const double Epsilon = 1.0e-10;
     static void Main()
     {
-        IShape[] shapes = new IShape[]
+        IShape[] shapes =
         {
             new Circle(5),
             new Square(7),
@@ -21,7 +23,7 @@ class Program
         Console.WriteLine($"2-nd max perimeter {GetSecondPerimeterShape(shapes)?.ToString() ?? "not found"}");
     }
 
-    private static IShape GetMaxAreaShape(IShape[] shapes)
+    private static IShape? GetMaxAreaShape(IShape[]? shapes)
     {
         if (shapes is null || shapes.Length == 0)
         {
@@ -32,7 +34,7 @@ class Program
         return shapes[^1];
     }
 
-    private static IShape GetSecondPerimeterShape(IShape[] shapes)
+    private static IShape? GetSecondPerimeterShape(IShape[]? shapes)
     {
         if (shapes is null || shapes.Length < 2)
         {

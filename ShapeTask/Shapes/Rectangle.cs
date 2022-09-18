@@ -1,20 +1,21 @@
-﻿namespace ShapeTask;
+﻿namespace ShapeTask.Shapes;
 
 public class Rectangle : IShape
 {
     public double Width { get; }
+    
     public double Height { get; }
 
     public Rectangle(double width, double height)
     {
         if (width <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(width), "Width cannot be less than 0");
+            throw new ArgumentOutOfRangeException(nameof(width), width, "Width cannot be less than or equal to 0");
         }
 
         if (height <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(height), "Height cannot be less than 0");
+            throw new ArgumentOutOfRangeException(nameof(height), height, "Height cannot be less than or equal to 0");
         }
 
         Width = width;

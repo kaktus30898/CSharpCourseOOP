@@ -1,4 +1,4 @@
-﻿namespace ShapeTask;
+﻿namespace ShapeTask.Shapes;
 
 public class Circle : IShape
 {
@@ -8,7 +8,7 @@ public class Circle : IShape
     {
         if (radius <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(radius), "Radius cannot be less than 0");
+            throw new ArgumentOutOfRangeException(nameof(radius), radius, "Radius cannot be less than or equal to 0");
         }
 
         Radius = radius;

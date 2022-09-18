@@ -1,17 +1,24 @@
-﻿namespace ShapeTask;
+﻿namespace ShapeTask.Shapes;
 
 public class Triangle : IShape
 {
+    public const double Epsilon = 1.0e-10;
+    
     public double X1 { get; }
+    
     public double Y1 { get; }
+    
     public double X2 { get; }
+    
     public double Y2 { get; }
+    
     public double X3 { get; }
+    
     public double Y3 { get; }
 
     public Triangle(double x1, double y1, double x2, double y2, double x3, double y3)
     {
-        if (Math.Abs((y3 - y1) * (x2 - x1) - (x3 - x1) * (y2 - y1)) < Program.Epsilon)
+        if (Math.Abs((y3 - y1) * (x2 - x1) - (x3 - x1) * (y2 - y1)) < Epsilon)
         {
             throw new ArgumentException("Triangle does not exist");
         }

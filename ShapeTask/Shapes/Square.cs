@@ -1,4 +1,4 @@
-﻿namespace ShapeTask;
+﻿namespace ShapeTask.Shapes;
 
 public class Square : IShape
 {
@@ -8,7 +8,7 @@ public class Square : IShape
     {
         if (sideLength <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(sideLength), "Side length cannot be less than 0");
+            throw new ArgumentOutOfRangeException(nameof(sideLength), sideLength, "Side length cannot be less than or equal to 0");
         }
 
         SideLength = sideLength;
@@ -26,12 +26,12 @@ public class Square : IShape
 
     public double GetArea()
     {
-        return SideLength * 4;
+        return SideLength * SideLength;
     }
 
     public double GetPerimeter()
     {
-        return SideLength * SideLength;
+        return SideLength * 4;
     }
 
     public override bool Equals(object? obj)
