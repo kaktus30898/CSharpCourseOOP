@@ -5,7 +5,7 @@ namespace MatrixTask
 {
     public class Matrix
     {
-        private Vector[] _components;
+        private readonly Vector[] _components;
 
         public int Height => _components.Length;
 
@@ -49,7 +49,7 @@ namespace MatrixTask
 
             if (width <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(width), width,"Matrix width can't be less than 1");
+                throw new ArgumentOutOfRangeException(nameof(width), width, "Matrix width can't be less than 1");
             }
 
             _components = new Vector[height];
@@ -98,7 +98,7 @@ namespace MatrixTask
                 {
                     throw new ArgumentException("All vectors must have the same size", nameof(components));
                 }
-                
+
                 _components[i] = new Vector(components[i]);
             }
         }
@@ -109,14 +109,14 @@ namespace MatrixTask
             {
                 if (index < 0)
                 {
-                    throw new  ArgumentOutOfRangeException(nameof(index), index,"Index can't be less than 0");
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "Index can't be less than 0");
                 }
-            
+
                 if (index >= _components.Length)
                 {
-                    throw new  ArgumentOutOfRangeException(nameof(index), index,"Index can't be more than or equal to size");
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "Index can't be more than or equal to size");
                 }
-            
+
                 return _components[index];
             }
 
@@ -124,18 +124,55 @@ namespace MatrixTask
             {
                 if (index < 0)
                 {
-                    throw new  ArgumentOutOfRangeException(nameof(index), index,"Index can't be less than 0");
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "Index can't be less than 0");
                 }
-            
+
                 if (index >= _components.Length)
                 {
-                    throw new  ArgumentOutOfRangeException(nameof(index), index,"Index can't be more than or equal to size");
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "Index can't be more than or equal to size");
                 }
-                
-                // TODO проверить что value.Size == Width
+
+                if (value.Size != Width)
+                {
+                    throw new ArgumentException("The size of the vector must be equal to the width of the matrix", nameof(value));
+                }
 
                 _components[index] = new Vector(value);
             }
+        }
+
+        public Vector GetColumn(int index)
+        {
+            if (index < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), index, "Index can't be less than 0");
+            }
+
+            if (index >= Width)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), index, "Index can't be more than or equal to width");
+            }
+
+            Vector vector = new Vector(_components.Length);
+
+            for (int i = 0; i < _components.Length; i++)
+            {
+                vector[i] = _components[i][index];
+            }
+
+            return vector;
+        }
+
+        public Matrix Transpose()
+        {
+            Matrix matrix = new Matrix(Width, _components.Length);
+
+            for (int i = 0; i < _components.Length; i++)
+            {
+                matrix[i] = GetColumn(i);
+            }
+
+            return matrix;
         }
 
         public override string ToString()
@@ -161,19 +198,21 @@ namespace MatrixTask
                 return true;
             }
 
-            if (obj is not Vector v)
+            if (obj is null || obj.GetType() != GetType())
             {
                 return false;
             }
 
-            if (_components.Length != v._components.Length)
+            Matrix m = (Matrix)obj;
+
+            if (_components.Length != m._components.Length || Width != m.Width)
             {
                 return false;
             }
 
             for (int i = 0; i < _components.Length; i++)
             {
-                if (_components[i] != v._components[i])
+                if (!_components[i].Equals(m._components[i]))
                 {
                     return false;
                 }
@@ -184,7 +223,7 @@ namespace MatrixTask
 
         public override int GetHashCode()
         {
-            int prime = 11;
+            int prime = 7;
             int hash = 1;
 
             foreach (var component in _components)
@@ -195,49 +234,116 @@ namespace MatrixTask
             return hash;
         }
 
-        private void ExtendIfNeeded(int neededSize)
+        public void Add(Matrix matrix)
         {
-            if (neededSize <= Size)
+            if (Width != matrix.Width || _components.Length != matrix._components.Length)
             {
-                return;
+                throw new ArgumentException("Matrices must have the same height and width");
             }
-            
-            Array.Resize(ref _components, neededSize);
-        }
 
-        public void Add(Vector vector)
-        {
-            int otherVectorSize = vector.Size;
-            ExtendIfNeeded(otherVectorSize);
-
-            for (int i = 0; i < otherVectorSize; i++)
+            for (int i = 0; i < _components.Length; i++)
             {
-                _components[i] += vector._components[i];
+                _components[i].Add(matrix._components[i]);
             }
         }
 
-        public void Subtract(Vector otherVector)
+        public void Subtract(Matrix matrix)
         {
-            int otherVectorSize = otherVector.Size;
-            ExtendIfNeeded(otherVectorSize);
-
-            for (int i = 0; i < otherVectorSize; i++)
+            if (Width != matrix.Width || _components.Length != matrix._components.Length)
             {
-                _components[i] -= otherVector._components[i];
+                throw new ArgumentException("Matrices must have the same height and width");
+            }
+
+            for (int i = 0; i < _components.Length; i++)
+            {
+                _components[i].Subtract(matrix._components[i]);
             }
         }
 
         public void MultiplyByScalar(double multiplier)
         {
-            for (int i = 0; i < _components.Length; i++)
+            foreach (var component in _components)
             {
-                _components[i] *= multiplier;
+                component.MultiplyByScalar(multiplier);
             }
         }
 
-        public void Reverse()
+        public Matrix GetAlgebraicAddition(int row, int column)
         {
-            MultiplyByScalar(-1);
+            if (row < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(row), row, "Row can't be less than 0");
+            }
+
+            if (row >= _components.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(row), row, "Row can't be more than or equal to height");
+            }
+
+            if (column < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(column), column, "Column can't be less than 0");
+            }
+
+            if (column >= Width)
+            {
+                throw new ArgumentOutOfRangeException(nameof(column), column, "Column can't be more than or equal to width");
+            }
+
+            Matrix matrix = new Matrix(_components.Length - 1, Width - 1);
+
+            for (int targetRowIndex = 0; targetRowIndex < _components.Length - 1; targetRowIndex++)
+            {
+                int sourceRowIndex = targetRowIndex < row ? targetRowIndex : targetRowIndex + 1;
+
+                for (int targetColumnIndex = 0; targetColumnIndex < Width - 1; targetColumnIndex++)
+                {
+                    int sourceColumnIndex = targetColumnIndex < column ? targetColumnIndex : targetColumnIndex + 1;
+                    matrix[targetRowIndex][targetColumnIndex] = _components[sourceRowIndex][sourceColumnIndex];
+                }
+            }
+
+            return matrix;
+        }
+
+        public double CalculateDeterminant()
+        {
+            if (_components.Length != Width)
+            {
+                throw new ArgumentException("The width of the matrix must be equal to its height");
+            }
+
+            if (_components.Length == 1)
+            {
+                return _components[0][0];
+            }
+
+            double determinant = 0;
+
+            for (int i = 0; i < Width; i++)
+            {
+                double sign = i % 2 == 0 ? 1 : -1;
+                determinant += sign * _components[0][i] * GetAlgebraicAddition(0, i).CalculateDeterminant();
+            }
+
+            return determinant;
+        }
+
+        public Vector MultiplicationByVector(Vector vector)
+        {
+            if (vector.Size != Width)
+            {
+                throw new ArgumentException("The width of the matrix must match the size of the vector.");
+            }
+
+            Vector resultVector = new Vector(vector.Size);
+
+            for (int i = 0; i < Width; i++)
+            {
+                resultVector[i] = Vector.GetScalarMultiply(_components[i], vector);
+            }
+
+            return resultVector;
         }
 
         public static Vector GetSum(Vector vector1, Vector vector2)
@@ -254,18 +360,18 @@ namespace MatrixTask
             return result;
         }
 
-        public static double GetScalarMultiply(Vector vector1, Vector vector2)
-        {
-            int size = Math.Min(vector1.Size, vector2.Size);
-
-            double result = 0;
-
-            for (int i = 0; i < size; i++)
-            {
-                result += vector1._components[i] * vector2._components[i];
-            }
-
-            return result;
-        }
+        /*  public static double GetScalarMultiply(Vector vector1, Vector vector2)
+          {
+              int size = Math.Min(vector1.Size, vector2.Size);
+  
+              double result = 0;
+  
+              for (int i = 0; i < size; i++)
+              {
+                  result += vector1._components[i] * vector2._components[i];
+              }
+  
+              return result;
+          }*/
     }
 }
